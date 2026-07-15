@@ -1,0 +1,68 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Ollama",
+      "options": {
+        "baseURL": "http://localhost:11434/v1"
+      },
+      "models": {
+        "modelscope.cn/unsloth/DeepSeek-R1-Distill-Qwen-7B-GGUF:latest": {
+          "name": "DeepSeek-R1-7B",
+          "limit": {
+            "context": 64000,
+            "output": 8192
+          }
+        }
+      }
+    }
+  },
+  "model": "ollama/modelscope.cn/unsloth/DeepSeek-R1-Distill-Qwen-7B-GGUF:latest",
+  "compaction": {
+    "auto": true,
+    "prune": false,
+    "reserved": 10000
+  },
+  "mcp": {
+    "lyrenth": {
+      "type": "local",
+      "command": ["npx", "-y", "--registry", "https://registry.npmjs.org/", "lyrenth-mcp"],
+      "enabled": true,
+      "environment": {
+        "LYRENTH_API_KEY": "aiwk_4084bcd7bba4d64b026430b38ef8f2772e0ba9191fde11a654571fa663d924db"
+      }
+    },
+    "playwright": {
+      "type": "local",
+      "command": ["npx", "-y", "@playwright/mcp@latest"],
+      "enabled": true
+    },
+    "economics-rag": {
+      "type": "local",
+      "command": [
+        "/home/lqp/miniconda3/envs/rag/bin/python",
+        "/home/lqp/projs/rag/mcp_server.py"
+      ],
+      "enabled": true
+    }
+  },
+  "agent": {
+    "build": {
+      "maxLoops": 15,
+      "forbiddenCommands": [
+        "rm -rf /",
+        "mkfs",
+        "dd",
+        "git push"
+      ],
+      "dangerouslySkipAllConfirmations": true,
+      "permissions": {
+        "terminal": "allow",
+        "file_write": "allow",
+        "network": "deny",
+        "mcp": "allow"
+      }
+    }
+  }
+}
